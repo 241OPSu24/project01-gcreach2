@@ -1,3 +1,85 @@
 Manifest-Version: 1.0
 X-COMMENT: Main-Class will be added automatically by build
 
+import java.util.Scanner;
+
+public class CreachGProject1 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int[] smithVotes = new int[3];
+        int[] carterVotes = new int[3];
+
+        // Input votes for each precinct
+        for (int i = 0; i < 3; i++) {
+            System.out.println("Enter votes for Precinct " + (i + 1));
+            System.out.print("Mr. Smith votes: ");
+            smithVotes[i] = scanner.nextInt();
+            System.out.print("Carter Pewterschmidt votes: ");
+            carterVotes[i] = scanner.nextInt();
+        }
+
+        // Calculate and display total votes
+        int totalSmithVotes = findTotalVotes(smithVotes);
+        int totalCarterVotes = findTotalVotes(carterVotes);
+
+        System.out.println("The votes for each candidate are:");
+        System.out.println("Mr Smith: " + totalSmithVotes);
+        System.out.println("Carter Pewterschmidt: " + totalCarterVotes);
+
+        displayWinner(totalSmithVotes, totalCarterVotes);
+
+        // Allow recounts
+        System.out.print("Do you have any recounts? 1 for Yes, 2 for No: ");
+        int recount = scanner.nextInt();
+        while (recount == 1) {
+            System.out.print("Select the candidate number to update (1. Mr. Smith, 2. Carter Pewterschmidt): ");
+            int candidate = scanner.nextInt();
+            System.out.print("Select precinct to change (1, 2, 3): ");
+            int precinct = scanner.nextInt();
+            System.out.print("Enter new number of votes: ");
+            int newVotes = scanner.nextInt();
+
+            if (candidate == 1) {
+                smithVotes[precinct - 1] = newVotes;
+            } else {
+                carterVotes[precinct - 1] = newVotes;
+            }
+
+            // Recalculate and display total votes
+            totalSmithVotes = findTotalVotes(smithVotes);
+            totalCarterVotes = findTotalVotes(carterVotes);
+
+            System.out.println("The votes for each candidate are:");
+            System.out.println("Mr Smith: " + totalSmithVotes);
+            System.out.println("Carter Pewterschmidt: " + totalCarterVotes);
+
+            displayWinner(totalSmithVotes, totalCarterVotes);
+
+            System.out.print("Do you have any recounts? 1 for Yes, 2 for No: ");
+            recount = scanner.nextInt();
+        }
+
+        scanner.close();
+    }
+
+    public static int findTotalVotes(int[] votes) {
+        int total = 0;
+        for (int vote : votes) {
+            total += vote;
+        }
+        return total;
+    }
+
+    public static void displayWinner(int firstCandidate, int secondCandidate) {
+        if (firstCandidate > secondCandidate) {
+            System.out.println("Mr Smith with " + firstCandidate + " votes is the winner");
+        } else if (secondCandidate > firstCandidate) {
+            System.out.println("Carter Pewterschmidt with " + secondCandidate + " votes is the winner");
+        } else {
+            System.out.println("It is a tie!");
+        }
+    }
+}
+
